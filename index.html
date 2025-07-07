@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Susan Saxe Gold Vault - Secure Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === GLOBAL STYLES === */
+        :root {
+            --gold: #D4AF37;
+            --navy: #0A1A2F;
+            --slate: #2A3A5A;
+            --light: #F5F5F5;
+            --success: #28A745;
+            --error: #FF6B6B;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--navy);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* === LOGIN PAGE (SHOWS FIRST) === */
+        #login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(rgba(10,26,47,0.9), rgba(10,26,47,0.9)), 
+                        url('https://images.unsplash.com/photo-1588361861040-ac9b0e9475dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+        }
+        
+        .login-container {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid var(--gold);
+        }
+        
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-logo img {
+            width: 80px;
+        }
+        
+        .login-logo h2 {
+            color: var(--gold);
+            margin-top: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--gold);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--gold);
+            border-radius: 5px;
+            color: white;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--gold);
+            color: var(--navy);
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            background: #e6c260;
+        }
+        
+        .error-message {
+            color: var(--error);
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        /* === MAIN WEBSITE (HIDDEN UNTIL LOGIN) === */
+        #main-content {
+            display: none;
+        }
+        
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            height: 30px;
+        }
+        
+        .nav-links a {
+            margin-left: 20px;
+            color: var(--navy);
+            text-decoration: none;
+            font-weight: 500;
+
+transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+        
+        /* Hero */
+        .hero {
+            background: linear-gradient(rgba(10,26,47,0.8), rgba(10,26,47,0.8)), 
+                        url('https://images.unsplash.com/photo-1588361861040-ac9b0e9475dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 120px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Memorial Section */
+        .memorial {
+            padding: 80px 0;
+            background-color: var(--navy);
+            color: white;
+        }
+        
+        .memorial-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .memorial-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .memorial-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .memorial-text {
+            flex: 1;
+        }
+        
+        .memorial-text h2 {
+            font-size: 2.2rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+        
+        .memorial-text p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        /* Summary Cards */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            color: var(--gold);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        /* Vault Items */
+        .vault-section {
+            padding: 60px 0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+        
+        .vault-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .vault-item {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .vault-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .item-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .vault-item:hover .item-image img {
+            transform: scale(1.1);
+        }
+        
+        .item-details {
+            padding: 20px;
+        }
+        
+        .item-details h3 {
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+
+padding-bottom: 10px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: var(--gold);
+        }
+        
+        /* Timeline */
+        .timeline {
+            margin: 60px 0;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: var(--gold);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+        
+        .timeline-content {
+            width: calc(50% - 40px);
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-date {
+            position: absolute;
+            top: 20px;
+            width: 100px;
+            text-align: center;
+            left: calc(50% - 50px);
+            background: var(--gold);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        /* Storage Tracker */
+        .tracker {
+            background: var(--navy);
+            color: white;
+            padding: 60px 0;
+            margin: 60px 0;
+            text-align: center;
+        }
+        
+        .tracker h2 {
+            margin-bottom: 30px;
+            color: var(--gold);
+        }
+        
+        .tracker-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .stat {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .stat .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin: 10px 0;
+        }
+        
+        /* FAQ */
+        .faq {
+            margin: 60px 0;
+        }
+        
+        .faq h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--gold);
+        }
+        
+        .faq-item {
+            background: white;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 0 20px 20px;
+            max-height: 500px;
+        }
+        
+        /* Audit Log */
+        .audit-log {
+            margin-top: 60px;
+        }
+        
+        .audit-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .audit-table th {
+            background-color: var(--gold);
+            color: var(--navy);
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .audit-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+        
+        .audit-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--navy);
+
+color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .footer-content p {
+            margin-bottom: 10px;
+        }
+        
+        .copyright {
+            color: rgba(245, 245, 245, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .memorial-container {
+                flex-direction: column;
+            }
+            
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                flex-direction: column !important;
+            }
+            
+            .timeline-content {
+                width: calc(100% - 80px);
+                margin-left: 80px;
+            }
+            
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: 0;
+                margin-right: 80px;
+            }
+            
+            .timeline-date {
+                left: 0;
+                width: 60px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                display: flex;
+                gap: 15px;
+            }
+            
+            .nav-links a {
+                margin-left: 0;
+            }
+            
+            .hero {
+                padding: 80px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .vault-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .tracker-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .login-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- === LOGIN PAGE (SHOWS FIRST) === -->
+    <div id="login-page">
+        <div class="login-container">
+            <div class="login-logo">
+                <img src="https://img.icons8.com/ios-filled/100/000000/gold-bars.png" alt="Vault">
+                <h2>Susan Saxe Gold Vault</h2>
+                <p>Secure Family Portal</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Family ID</label>
+                    <input type="text" id="username" required placeholder="Enter family ID">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Passphrase</label>
+                    <input type="password" id="password" required placeholder="Enter passphrase">
+                </div>
+                
+                <button type="submit" class="login-btn">Access Vault</button>
+                <div id="error-message" class="error-message">Invalid credentials</div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- === MAIN WEBSITE (HIDDEN UNTIL LOGIN) === -->
+    <div id="main-content">
+        <!-- Header -->
+        <header>
+            <div class="container header-content">
+                <div class="logo">
+                    <img src="https://img.icons8.com/ios-filled/100/000000/gold-bars.png" alt="Vault Logo">
+                    <span>Saxe Gold Vault</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#memorial">Memorial</a>
+                    <a href="#assets">Assets</a>
+                    <a href="#timeline">Timeline</a>
+                    <a href="#faq">FAQ</a>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Hero -->
+        <section class="hero">
+
+<div class="container">
+                <h1>Susan Saxe Memorial Gold Vault</h1>
+                <p>Documenting and preserving a legacy of wealth for future generations</p>
+            </div>
+        </section>
+        
+        <!-- Memorial Section -->
+        <section id="memorial" class="memorial">
+            <div class="container memorial-container">
+                <div class="memorial-image">
+                    <img src="https://images.unsplash.com/photo-1554080353-a576cf803bda?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Susan Saxe Portrait">
+                </div>
+                <div class="memorial-text">
+                    <h2>In Loving Memory of Susan Saxe</h2>
+                    <p>This vault contains the precious legacy left by Susan Saxe, a treasure that represents her life's work and dedication to our family's future.</p>
+                    <p>The two trunks of gold bars were deposited with the security company five years ago and remain securely stored under the terms of the original agreement.</p>
+                    <p>As the legal certificate holder, I maintain the right to claim these assets once all accumulated demurrage fees are settled.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Asset Summary -->
+        <section id="assets" class="container">
+            <div class="section-header">
+                <h2>Gold Asset Documentation</h2>
+                <p>Complete transparency of the vault's contents and value</p>
+            </div>
+            
+            <div class="summary-cards">
+                <div class="card">
+                    <h3>Initial Deposit Value</h3>
+                    <div class="value">$25,800,000</div>
+                    <p>Value at time of deposit 5 years ago</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Current Market Value</h3>
+                    <div class="value">$36,200,000</div>
+                    <p>Estimated value based on current gold prices</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Accumulated Demurrage</h3>
+                    <div class="value">$36,500</div>
+                    <p>$20 daily fee over 5 years</p>
+                </div>
+            </div>
+            
+            <div class="vault-section">
+                <div class="vault-items">
+                    <!-- Gold Trunk 1 -->
+                    <div class="vault-item">
+                        <div class="item-image">
+                            <img src="https://images.unsplash.com/photo-1596436889106-be35e843f974?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Gold Bars">
+                        </div>
+                        <div class="item-details">
+                            <h3>Gold Trunk #1</h3>
+                            <div class="detail-row">
+                                <span class="detail-label">Weight:</span>
+                                <span>1,250 kg</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Purity:</span>
+                                <span>24K (99.99%)</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Value:</span>
+                                <span>$12,340,000</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Storage Location:</span>
+                                <span class="secure-location">Vault A-12</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Gold Trunk 2 -->
+                    <div class="vault-item">
+                        <div class="item-image">
+                            <img src="https://images.unsplash.com/photo-1583531172005-814191b8b6c0?ixlib=rb-1.2.
+
+1&auto=format&fit=crop&w=1350&q=80" alt="Gold Coins">
+                        </div>
+                        <div class="item-details">
+                            <h3>Gold Trunk #2</h3>
+                            <div class="detail-row">
+                                <span class="detail-label">Weight:</span>
+                                <span>1,100 kg</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Purity:</span>
+                                <span>22K (91.67%)</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Value:</span>
+                                <span>$11,110,000</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Storage Location:</span>
+                                <span class="secure-location">Vault A-15</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="audit-log">
+                    <h3 class="section-header">Recent Activity</h3>
+                    <table class="audit-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Activity</th>
+                                <th>Authorized By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2023-06-15</td>
+                                <td>Annual purity verification</td>
+                                <td>Swiss Audit Group</td>
+                            </tr>
+                            <tr>
+                                <td>2023-03-22</td>
+                                <td>Weight confirmation</td>
+                                <td>Vault Manager</td>
+                            </tr>
+                            <tr>
+                                <td>2022-12-05</td>
+                                <td>Security system upgrade</td>
+                                <td>Tech Security Team</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Timeline -->
+        <section id="timeline" class="container timeline">
+            <div class="section-header">
+                <h2>Deposit Timeline</h2>
+                <p>Key events in the history of the gold holdings</p>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Initial Deposit</h3>
+                    <p>Two trunk boxes of gold were deposited with the security company. Certificate of deposit issued to Susan Saxe.</p>
+                </div>
+                <div class="timeline-date">2018</div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>First Year Verification</h3>
+                    <p>Independent audit confirmed the weight and purity of the gold holdings. Storage conditions verified.</p>
+                </div>
+                <div class="timeline-date">2019</div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Market Value Increase</h3>
+                    <p>Gold prices rose significantly, increasing the market value of the holdings by approximately 30%.</p>
+                </div>
+                <div class="timeline-date">2020</div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Current Status</h3>
+
+<p>Assets remain securely stored. Certificate of deposit held by rightful owner. Demurrage fees continue to accrue at $20/day.</p>
+                </div>
+                <div class="timeline-date">2023</div>
+            </div>
+        </section>
+        
+        <!-- Storage Tracker -->
+        <section class="tracker">
+            <div class="container">
+                <h2>Asset Storage Duration</h2>
+                <p>The gold trunks have been securely stored for:</p>
+                
+                <div class="tracker-stats">
+                    <div class="stat">
+                        <div class="number" id="years">5</div>
+                        <div class="label">Years</div>
+                    </div>
+                    
+                    <div class="stat">
+                        <div class="number" id="days">1825</div>
+                        <div class="label">Days</div>
+                    </div>
+                    
+                    <div class="stat">
+                        <div class="number">$20</div>
+                        <div class="label">Daily Fee</div>
+                    </div>
+                    
+                    <div class="stat">
+                        <div class="number" id="total-fee">$36,500</div>
+                        <div class="label">Total Fees</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FAQ -->
+        <section id="faq" class="container faq">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Common questions about the vault and gold holdings</p>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What is the certificate of deposit?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>The certificate of deposit is the legal document proving ownership of the gold trunks in storage. It was issued by the security company at the time of deposit and contains all relevant details including the deposit number, description of assets, and terms of storage.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How are demurrage fees calculated?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Demurrage fees are charged by the security company for the ongoing storage and protection of the assets. In this case, the fee is $20 per day, which amounts to $7,300 per year. These fees continue to accrue until the assets are claimed and all outstanding fees are paid.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How was the current value calculated?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>The current value is based on the weight and purity of the gold multiplied by the current market price of gold. Gold prices have appreciated approximately 40% over the 5-year storage period, resulting in the increased valuation from $25.8 million to $36.2 million.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What is required to claim the assets?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>To claim the assets, the certificate holder must present the original certificate of deposit to the security company and pay all accumulated demurrage fees.
+
+Proper identification and any other verification required by the security company's policies must also be provided.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="container footer-content">
+                <p>Susan Saxe Gold Vault Documentation</p>
+                <p>In loving memory of Susan Saxe (1945-2021)</p>
+                <p class="copyright">&copy; 2023 All Rights Reserved</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // === LOGIN FUNCTIONALITY ===
+        const validCredentials = {
+            username: "saxe_family",
+            password: "SusanSaxeGold1945!"
+        };
+        
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('error-message');
+            
+            if (username === validCredentials.username && password === validCredentials.password) {
+                // Successful login
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                
+                // Show all secure info
+                document.querySelectorAll('.secure-location').forEach(el => {
+                    el.style.color = 'var(--gold)';
+                    el.style.fontWeight = '600';
+                });
+            } else {
+                // Failed login
+                errorElement.style.display = 'block';
+                setTimeout(() => {
+                    errorElement.style.display = 'none';
+                }, 3000);
+            }
+        });
+        
+        // === FAQ TOGGLE ===
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                item.classList.toggle('active');
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+            });
+        });
+        
+        // === STORAGE DURATION CALCULATOR ===
+        function updateTracker() {
+            const depositDate = new Date('2018-06-01'); // Change to actual deposit date
+            const today = new Date();
+            const diffTime = Math.abs(today - depositDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            const diffYears = (diffDays / 365).toFixed(1);
+            
+            document.getElementById('days').textContent = diffDays;
+            document.getElementById('years').textContent = diffYears;
+            document.getElementById('total-fee').textContent = '$' + (diffDays * 20).toLocaleString();
+        }
+        
+        // Initialize
+        updateTracker();
+    </script>
+</body>
+</html>
